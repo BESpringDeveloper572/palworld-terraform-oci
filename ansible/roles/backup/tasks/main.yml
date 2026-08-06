@@ -1,0 +1,18 @@
+---
+- name: Ensure cron is installed
+  ansible.builtin.apt:
+    name: cron
+    state: present
+    update_cache: yes
+  become: true  # Required for root privileges
+
+- name: Schedule hourly Palworld backup upload to OCI via PAR
+  ansible.builtin.cron:
+    name: "Upload Palworld Backups to OCI Bucket via PAR"
+    minute: "5"  # Runs at 5 minutes past every hour
+    user: "root"
+    # Directly uses the variable to populate the cron string
+    job: >
+      LATEST=$(ls -t {{ server_data_dir }}/backups/*.tar.gz 2>/dev/null | head -n 1) && 
+      [ -f "$LATEST" ] && 
+      curl -X PUT --data-binary "@$LATEST" "{{ par_url }}$(basename "$LATEST")" > /dev/null 2>&1

@@ -1,0 +1,5 @@
+server_data_dir: "/opt/palworld"
+server_name: PalworldServerName
+server_password: YourServerPassword
+admin_password: YourAdminPassword
+timezone: Z

@@ -1,0 +1,56 @@
+---
+- name: Update apt cache and install Docker dependencies
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: present
+    update_cache: true
+
+- name: Install Docker Engine
+  ansible.builtin.apt:
+    name: docker.io
+    state: present
+
+- name: Ensure Docker is installed and running
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Create Palworld data directory on host
+  ansible.builtin.file:
+    path: "{{ server_data_dir }}"
+    state: directory
+    mode: '0755'
+    owner: '1000'
+    group: '1000'
+
+- name: Run Palworld Docker container
+  community.docker.docker_container:
+    name: palworld-server
+    image: thijsvanloef/palworld-server-docker:latest
+    state: started
+    restart_policy: unless-stopped
+    ports:
+      - "8211:8211/udp"
+      - "25575:25575/tcp"
+    volumes:
+      - "{{ server_data_dir }}:/palworld/"
+    env:
+      PUID: "1000"
+      PGID: "1000"
+      PORT: "8211"
+      PLAYERS: "8"
+      MULTITHREAD: "true"
+      COMMUNITY: "true"
+      TZ: "{{ timezone }}"
+      SERVER_NAME: "{{ server_name }}"
+      SERVER_PASSWORD: "{{ server_password }}"
+      ADMIN_PASSWORD: "{{ admin_password }}"
+      UPDATE_ON_BOOT: "true"
+      PALWORLD_ALLOW_NEGATIVE_DELTA_TIME: "true"
+      USE_DEPOT_DOWNLOADER: "true"
