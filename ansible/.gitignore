@@ -1,0 +1,15 @@
+# Ignore Ansible inventory files
+hosts.ini
+inventory.ini
+hosts
+
+group_vars/**.yml
+
+# Ignore sensitive keys and tokens
+*.pem
+*.key
+*.pub
+
+### Ansible template
+*.retry
+

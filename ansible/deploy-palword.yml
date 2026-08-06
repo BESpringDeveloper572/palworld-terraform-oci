@@ -1,0 +1,82 @@
+---
+- name: Deploy Palworld Docker Container
+  hosts: palworld_server
+  become: true
+  vars:
+    server_data_dir: "/opt/palworld"
+    server_name: "PalworldServerName"
+    server_password: "YourServerPassword"
+    admin_password: "YourAdminPassword"
+#    par_url: "https://some-par-url.example"
+
+  tasks:
+    - name: Create Palworld data directory on host
+      ansible.builtin.file:
+        path: "{{ server_data_dir }}"
+        state: directory
+        mode: '0755'
+        owner: '1000'
+        group: '1000'
+
+    - name: Ensure cron is installed
+      ansible.builtin.apt:
+        name: cron
+        state: present
+        update_cache: yes
+      become: true  # Required for root privileges
+
+    - name: Schedule hourly Palworld backup upload to OCI via PAR
+      ansible.builtin.cron:
+        name: "Upload Palworld Backups to OCI Bucket via PAR"
+        minute: "5"  # Runs at 5 minutes past every hour
+        user: "root"
+        # Directly uses the variable to populate the cron string
+        job: >
+          LATEST=$(ls -t {{ server_data_dir }}/backups/*.tar.gz 2>/dev/null | head -n 1) && 
+          [ -f "$LATEST" ] && 
+          curl -X PUT --data-binary "@$LATEST" "{{ par_url }}$(basename "$LATEST")" > /dev/null 2>&1
+
+    - name: Update apt cache and install Docker dependencies
+      ansible.builtin.apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+        state: present
+        update_cache: true
+
+    - name: Install Docker Engine
+      ansible.builtin.apt:
+        name: docker.io
+        state: present
+
+    - name: Ensure Docker is installed and running
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Run Palworld Docker container
+      community.docker.docker_container:
+        name: palworld-server
+        image: thijsvanloef/palworld-server-docker:latest
+        state: started
+        restart_policy: unless-stopped
+        ports:
+          - "8211:8211/udp"
+          - "25575:25575/tcp"
+        volumes:
+          - "{{ server_data_dir }}:/palworld/"
+        env:
+          PUID: "1000"
+          PGID: "1000"
+          PORT: "8211"
+          PLAYERS: "8"
+          MULTITHREAD: "true"
+          COMMUNITY: "true"
+          SERVER_NAME: "{{ server_name }}"
+          SERVER_PASSWORD: "{{ server_password }}"
+          ADMIN_PASSWORD: "{{ admin_password }}"
+          UPDATE_ON_BOOT: "true"
