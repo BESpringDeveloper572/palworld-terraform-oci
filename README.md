@@ -35,8 +35,15 @@
 1. Go into Ansible directory and run `ansible-playbook deploy-palworld.yml --ask-pass` If you get permission denied, run `ssh-add <path-to-ssh-key>` first.
 
 ## Tips and Tricks
+- After you are done with `terraform` commands, unpair your API key pair and/or delete the user if you created one just to make sure no one creates/deletes stuff in your account. If you ever need to delete your server, do it from the [console](https://www.oracle.com/cloud/free/).
+- Or if you decide to keep it, modify your policy to only include
+   ```text
+    Allow group 'Default'/'<your-group-name>' to manage instance-family in compartment <your-compartment-name>
+   Allow group 'Default'/'<your-group-name>' to read app-catalog-listing in tenancy
+   ```
+  Then you can delete your server with terraform using `terraform destroy -target=module.server`. The rest of resources created in your account should not cost you anything, but if you are done with it completely, you can run `terraform destroy` (make sure to save your backups before doing any destroy commands).
 - You can skip steps 7 and 8 if you upgrade to Pay As You Go (PAYG). If you upgrade to PAYG, you can update your ocpus from 2 to 4 and memory from 12 to 24 (which allows you to have more players), but be careful as you may accidentally be charged due to [June 2026 free tier changes](https://www.cnelecar.com/blog/oracle-always-free-arm-limits-cut-2026/).
 - Be aware that things may change in the future and Oracle can shut down your server at any time (and may be even your account). I'd suggest to copy your server backup to your computer every once in a while.
 - Add AUTO_UPDATE_CRON_EXPRESSION and BACKUP_CRON_EXPRESSION to deploy-palworld.yml under env to a time when you think people won't be online. It defaults to around 2 AM in the timezone you set (my friends are nocturnal so I'll probably change this myself).
 
-If you are stuck on any steps, please look over official documentation for [Oracle Cloud Infrastructure](https://docs.oracle.com/en-us/iaas/Content/devtoolshome.htm) or [Ansible](https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_intro.html).
+If you are stuck on any steps or need additional info, please look over official documentation for [Oracle Cloud Infrastructure](https://docs.oracle.com/en-us/iaas/Content/devtoolshome.htm) or [Ansible](https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_intro.html) or [Palworld](https://hub.docker.com/r/thijsvanloef/palworld-server-docker).
