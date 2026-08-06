@@ -23,7 +23,7 @@
    ```
    3. In the same user management tab, create a user and assign it to this group
 1. [Create a API key pair](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/apisigningkey.htm#two) and bind it to your root user or the user created in step 3 if you did it. Save the fingerprint somewhere for later.
-1. Go into terraform.tfvars.sample and fill in the fields (I used a password for my key pair, but you don't have to. You will need to delete the variable and the line where it's used if you do.). Rename terraform.tfvars.sample to terraform.tfvars. 
+1. Go into terraform.tfvars.sample and fill in the fields (I used a password for my key pair, but you don't have to. You will need to delete the variable and the line where it's used if you do.). For `image_id`, go [here](https://docs.oracle.com/en-us/iaas/images/ubuntu-2404/canonical-ubuntu-24-04-minimal-aarch64-2026-07-17-0.htm) and look for your region (feel free to use a different OS but you will have to rename remote_user in Ansible scripts). Rename terraform.tfvars.sample to terraform.tfvars. 
 1. Now go into your terminal and go to terraform directory and run `terraform init`.
 1. If you just created your account, update line 5 of `terraform/modules/server/server.tf` to `VM.Standard.A2.Flex`, else skip to step 10. You will create a paid instance temporarily then downgrade to a free tier instance. Otherwise, you may get Out of Host Capacity error when creating.
 1. Run `terraform apply` and type "yes" when prompted. Save your public ip address.
