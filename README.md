@@ -35,7 +35,8 @@
 1. Go into Ansible directory and run `ansible-playbook deploy-palworld.yml --ask-pass` If you get permission denied, run `ssh-add <path-to-ssh-key>` first.
 
 ## Tips and Tricks
-- After you are done with `terraform` commands, unpair your API key pair and/or delete the user if you created one just to make sure no one creates/deletes stuff in your account. If you ever need to delete your server, do it from the [console](https://www.oracle.com/cloud/free/).
+- Make sure to **keep** your ssh key for your server (the non pem/pub files). You will need this to restart the server or go into the server to maintenance (like restoring a backup).
+- After you are done with `terraform` commands, unpair your API key pair and/or delete the user if you created one just to make sure no one creates/deletes stuff in your account. You can also delete the pem files (**not the one without a filename extension**) If you ever need to delete your server, do it from the [console](https://www.oracle.com/cloud/free/).
 - Or if you decide to keep it, modify your policy to only include
    ```text
     Allow group 'Default'/'<your-group-name>' to manage instance-family in compartment <your-compartment-name>
