@@ -32,6 +32,7 @@
    (Public ip should be outputted after terraform apply)
 1. Update the vars in ansible/group_vars/palworld_server.yml.sample and rename to palworld_server.yml. (timezone should be like CST, PST, etc)
 1. Create a new ssh-key pair (**DIFFERENT** from the one used for your OCI account). Use this [guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) to generate (notice it is different from one generated before with .pub files)
+1. Run `ssh-add <path-to-key>` using private key file (no .pub) you created in last step
 1. Go into Ansible directory and run `ANSIBLE_PRIVATE_KEY_FILE=<path-to-non-pub-file-generated-for-ssh-key> ansible-playbook deploy-palworld.yml --ask-pass`.
 
 ## Tips and Tricks

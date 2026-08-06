@@ -1,5 +1,5 @@
 resource "oci_core_instance" "palworld_server" {
-    # Required
+    display_name = "palworld-server"
     availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
     compartment_id = var.compartment_id
     shape = "VM.Standard.A1.Flex"

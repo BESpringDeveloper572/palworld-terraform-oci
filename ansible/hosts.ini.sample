@@ -1,2 +1,2 @@
 [palworld_server]
-<whatever-name> ansible_host=<public-ip-from-terraform-apply-output>
+<whatever-name> ansible_host=<public-ip-from-terraform-apply-output> ansible_ssh_private_key_file=<absolute-path-to-ssh-key-not-pub>
