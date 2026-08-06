@@ -15,6 +15,21 @@
     name: docker.io
     state: present
 
+- name: Create or update Docker daemon.json
+  ansible.builtin.copy:
+    dest: /etc/docker/daemon.json
+    content: |
+      {
+        "log-driver": "json-file",
+        "log-opts": {
+          "max-size": "10m",
+          "max-file": "3"
+        },
+        "no-new-priviledges": true,
+        "live-restore": true
+      }
+    mode: '0644'
+
 - name: Ensure Docker is installed and running
   ansible.builtin.service:
     name: docker

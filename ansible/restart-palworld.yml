@@ -1,0 +1,15 @@
+---
+- name: Deploy Palworld Docker Container
+  hosts: palworld_server
+  become: true
+
+  tasks:
+    - name: Restart Palworld Docker Container
+      hosts: palworld_server
+      become: true
+      tasks:
+        - name: Restart Palworld container
+          community.docker.docker_container:
+            name: palworld-server
+            restart: true
+            state: started
