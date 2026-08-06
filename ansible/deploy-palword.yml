@@ -7,7 +7,8 @@
     server_name: "PalworldServerName"
     server_password: "YourServerPassword"
     admin_password: "YourAdminPassword"
-#    par_url: "https://some-par-url.example"
+    par_url: "https://some-par-url.example"
+    timezone: "Z"
 
   tasks:
     - name: Create Palworld data directory on host
@@ -76,6 +77,7 @@
           PLAYERS: "8"
           MULTITHREAD: "true"
           COMMUNITY: "true"
+          TZ: "{{ timezone }}"
           SERVER_NAME: "{{ server_name }}"
           SERVER_PASSWORD: "{{ server_password }}"
           ADMIN_PASSWORD: "{{ admin_password }}"

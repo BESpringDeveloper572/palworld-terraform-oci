@@ -34,7 +34,7 @@
    [palworld_servers]
    <your-server-public-ip> ansible_user=ubuntu ansible_ssh_private_key_file=<path-to-your-ssh-key>
    ```
-1. Update the vars in ansible/host_vars/palworld_server.yml.sample and rename to palworld_server.yml.
+1. Update the vars in ansible/group_vars/palworld_server.yml.sample and rename to palworld_server.yml.
 1. Go into Ansible directory and run `ansible-playbook -i hosts.ini deploy-palworld.yml`.
 
 ## Tips and Tricks

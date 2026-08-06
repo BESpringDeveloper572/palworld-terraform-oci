@@ -2,3 +2,4 @@ server_name:
 server_password:
 admin_password:
 par_url:
+timezone:
