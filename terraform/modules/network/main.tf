@@ -23,6 +23,20 @@ resource "oci_core_route_table" "palworld_rt" {
   }
 }
 
+# 1. Ask an external provider for your current public IP
+data "http" "my_public_ip" {
+  url = "https://ipv4.icanhazip.com"
+}
+
+# 2. Convert your exact IP (e.g., "99.104.22.145") into an ISP regional block ("99.104.0.0/16")
+locals {
+  # chomp removes any trailing hidden newlines from the web request response
+  clean_ip = chomp(data.http.my_public_ip.response_body)
+
+  # regex replace turns "99.104.22.145" into "99.104.0.0/16"
+  my_isp_cidr_block = "${regex("^([0-9]+\\.[0-9]+)\\.", local.clean_ip)[0]}.0.0/16"
+}
+
 resource "oci_core_security_list" "palworld_sl" {
   compartment_id = var.compartment_id
   vcn_id         = oci_core_vcn.palworld_vcn.id
@@ -40,7 +54,7 @@ resource "oci_core_security_list" "palworld_sl" {
 
   ingress_security_rules {
     protocol = "6"
-    source   = "0.0.0.0/0"
+    source   = local.my_isp_cidr_block
     source_type = "CIDR_BLOCK"
 
     tcp_options {
