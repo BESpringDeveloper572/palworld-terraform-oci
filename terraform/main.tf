@@ -17,4 +17,5 @@ module "backup" {
   compartment_id = var.oci_comparment_id
   tenancy_ocid = var.tenancy_ocid
   region = var.region
+  instance_id = module.server.instance-OCID
 }

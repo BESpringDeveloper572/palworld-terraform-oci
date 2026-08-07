@@ -15,4 +15,4 @@
     job: >
       LATEST=$(ls -t {{ server_data_dir }}/backups/*.tar.gz 2>/dev/null | head -n 1) && 
       [ -f "$LATEST" ] && 
-      curl -X PUT --data-binary "@$LATEST" "{{ par_url }}$(basename "$LATEST")" > /dev/null 2>&1
+      oci os object put --bucket-name "palworld-backups" --file "${LATEST}" --auth instance_principal > /dev/null 2>&1

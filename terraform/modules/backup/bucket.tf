@@ -56,15 +56,16 @@ resource "oci_objectstorage_object_lifecycle_policy" "palworld_backup_delete_old
   ]
 }
 
-resource "time_offset" "palworld_par_url_expire_time" {
-  offset_years = 5
+resource "oci_identity_dynamic_group" "palworld_server_instance_permission_group" {
+  compartment_id = var.tenancy_ocid
+  description    = "Palworld instance principal"
+  matching_rule  = "Any {instance.id = '${var.instance_id}'}"
+  name           = "palworld-server-permissions"
 }
 
-resource "oci_objectstorage_preauthrequest" "palworld_par_upload_url" {
-  bucket       = oci_objectstorage_bucket.palworld_backups_bucket.name
-  namespace    = oci_objectstorage_bucket.palworld_backups_bucket.namespace
-  access_type  = "AnyObjectWrite"
-  name         = "palworld_par_upload"
-  time_expires = time_offset.palworld_par_url_expire_time.rfc3339
-  depends_on = [oci_objectstorage_bucket.palworld_backups_bucket]
+resource "oci_identity_policy" "palworld_server_backup_write_permission" {
+  compartment_id = var.compartment_id
+  description    = "Allow Palworld to write backups to Object Store"
+  name           = "palworld-backup-write-permission"
+  statements = ["Allow dynamic-group ${oci_identity_dynamic_group.palworld_server_instance_permission_group.name} to manage objects in compartment id ${var.compartment_id} where all {target.bucket.name='${oci_objectstorage_bucket.palworld_backups_bucket.name}', request.permission='OBJECT_CREATE'}"]
 }
