@@ -9,7 +9,8 @@
 - name: Schedule hourly Palworld backup upload to OCI via PAR
   ansible.builtin.cron:
     name: "Upload Palworld Backups to OCI Bucket via PAR"
-    minute: "5"  # Runs at 5 minutes past every hour
+    minute: "0"  # Runs at 5 minutes past every hour
+    hour: "1,13"
     user: "root"
     # Directly uses the variable to populate the cron string
     job: >
