@@ -1,0 +1,9 @@
+---
+- name: Upload backup from Object Store to server
+  hosts: palworld_server
+  become: true
+
+  tasks:
+    - name: Download using OCI CLI instead
+      ansible.builtin.shell: |
+        /root/bin/oci os object get --bucket-name palworld-backups --name {{ palworld_backup_tar }} --file /opt/palworld/backups/{{ palworld_backup_tar | basename }} --auth instance_principal

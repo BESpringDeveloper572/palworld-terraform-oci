@@ -25,9 +25,10 @@
 1. Go into Ansible directory and run `ansible-playbook deploy-palworld.yml --ask-pass` If you get permission denied, run `ssh-add <path-to-ssh-key>` first.
 
 ### Restart server
-1. Run `ansible-playbook restart-palworld`.
+1. Run `ansible-playbook restart-palworld.yml`.
 
 ### Restore from backup
+- Run `ansible-playbook upload-backup.yml -e "palworld_backup_tar=<file-name>"` to copy your backup from Object Store into server. Put keep/ in front of filename if the file is in keep directory.
 - Backups are periodically saved in OCI Object Store in your compartment with bucket name `palworld-backups`.
 - Backups are deleted after 14 days so either download saves to your computer or move backups to `/keep/` directory in bucket. Backups moved there are not deleted.
 - To restore from backup, ssh into server and run `docker exec -it palworld-server restore`. This command will look in `/opt/palworld/backups` so if you had to recreate your server. Just download from Object Store and move here.

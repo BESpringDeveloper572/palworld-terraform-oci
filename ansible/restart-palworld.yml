@@ -1,5 +1,5 @@
 ---
-- name: Deploy Palworld Docker Container
+- name: Restart Palworld Docker Container
   hosts: palworld_server
   become: true
 
