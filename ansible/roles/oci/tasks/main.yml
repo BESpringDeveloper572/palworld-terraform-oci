@@ -1,11 +1,8 @@
 ---
-- name: Purge old broken installation files if they exist
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: absent
-  loop:
-    - /root/bin/oci
-    - /root/lib/oracle-cli
+- name: Check if OCI CLI is already installed
+  ansible.builtin.stat:
+    path: /root/lib/oracle-cli/bin/oci
+  register: oci_binary
 
 - name: Install native Python and compiler prerequisites
   ansible.builtin.apt:
@@ -15,23 +12,27 @@
       - python3-pip
     state: present
     update_cache: yes
+  when: not oci_binary.stat.exists
 
 - name: Create an isolated root virtual environment
   ansible.builtin.command:
     cmd: python3 -m venv /root/lib/oracle-cli
     creates: /root/lib/oracle-cli/bin/pip
+  when: not oci_binary.stat.exists
 
 - name: Upgrade pip inside the virtual environment
   ansible.builtin.pip:
     name: pip
     state: latest
     virtualenv: /root/lib/oracle-cli
+  when: not oci_binary.stat.exists
 
 - name: Install the OCI CLI package directly via pip
   ansible.builtin.pip:
     name: oci-cli
     state: present
     virtualenv: /root/lib/oracle-cli
+  when: not oci_binary.stat.exists
 
 - name: Create hardcoded binary folder for root
   ansible.builtin.file:
@@ -40,6 +41,7 @@
     owner: root
     group: root
     mode: '0700'
+  when: not oci_binary.stat.exists
 
 - name: Symlink the working pip binary directly into root path
   ansible.builtin.file:
@@ -48,6 +50,7 @@
     state: link
     owner: root
     group: root
+  when: not oci_binary.stat.exists
 
 - name: Lock down directory permissions so ONLY root can interact
   ansible.builtin.file:
@@ -59,6 +62,7 @@
   loop:
     - /root/bin
     - /root/lib/oracle-cli
+  when: not oci_binary.stat.exists
 
 - name: Add bin folder to root profile
   ansible.builtin.lineinfile:
@@ -66,3 +70,4 @@
     line: 'export PATH=$PATH:/root/bin'
     create: yes
     state: present
+  when: not oci_binary.stat.exists
