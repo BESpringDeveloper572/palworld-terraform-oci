@@ -1,0 +1,14 @@
+---
+- name: Create and download backup from server to Object Store
+  hosts: palworld_server
+  become: true
+
+  tasks:
+    - name: Run backup
+      ansible.builtin.shell: |
+        docker exec palworld-server backup
+    - name: Upload backup to keep directory in Object Store
+      ansible.builtin.shell: |
+        LATEST=$(ls -t /opt/palworld/backups/*.tar.gz 2>/dev/null | head -n 1)
+        [ -f "$LATEST" ] && 
+        /root/bin/oci os object put --bucket-name "palworld-backups" --file "${LATEST}" --name "keep/$(basename $LATEST)" --auth instance_principal

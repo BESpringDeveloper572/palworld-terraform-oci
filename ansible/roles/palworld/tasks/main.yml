@@ -67,5 +67,6 @@
       SERVER_PASSWORD: "{{ server_password }}"
       ADMIN_PASSWORD: "{{ admin_password }}"
       UPDATE_ON_BOOT: "true"
+      RCON_ENABLED: "true"
       PALWORLD_ALLOW_NEGATIVE_DELTA_TIME: "true"
       USE_DEPOT_DOWNLOADER: "true"
