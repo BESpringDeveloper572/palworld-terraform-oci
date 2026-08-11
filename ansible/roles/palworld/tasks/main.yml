@@ -36,9 +36,33 @@
     state: started
     enabled: true
 
-- name: Create Palworld data directory on host
+- name: Create Palworld directory on host
   ansible.builtin.file:
     path: "{{ server_data_dir }}"
+    state: directory
+    mode: '0755'
+    owner: '1000'
+    group: '1000'
+
+- name: Create Palworld server directory on host
+  ansible.builtin.file:
+    path: "{{ server_data_dir }}/palworld_server"
+    state: directory
+    mode: '0755'
+    owner: '1000'
+    group: '1000'
+
+- name: Create Palworld backup directory on host
+  ansible.builtin.file:
+    path: "{{ server_data_dir }}/backups"
+    state: directory
+    mode: '0755'
+    owner: '1000'
+    group: '1000'
+
+- name: Create Palworld logs directory on host
+  ansible.builtin.file:
+    path: "{{ server_data_dir }}/logs"
     state: directory
     mode: '0755'
     owner: '1000'
@@ -52,21 +76,19 @@
     restart_policy: unless-stopped
     ports:
       - "8211:8211/udp"
-      - "25575:25575/tcp"
     volumes:
-      - "{{ server_data_dir }}:/palworld/"
+      - "{{ server_data_dir }}/backups:/home/steam/backups"
+      - "{{ server_data_dir }}/palworld_server:/palworld/Pal/Saved"
     env:
       PUID: "1000"
       PGID: "1000"
-      PORT: "8211"
-      PLAYERS: "8"
+      SERVER_PORT: "8211"
+      MAX_PLAYERS: "32"
       MULTITHREAD: "true"
-      COMMUNITY: "true"
+      LANGUAGE: "en"
       TZ: "{{ timezone }}"
       SERVER_NAME: "{{ server_name }}"
       SERVER_PASSWORD: "{{ server_password }}"
       ADMIN_PASSWORD: "{{ admin_password }}"
-      UPDATE_ON_BOOT: "true"
       RCON_ENABLED: "true"
-      PALWORLD_ALLOW_NEGATIVE_DELTA_TIME: "true"
-      USE_DEPOT_DOWNLOADER: "true"
+      IDLE_RESTART_ENABLED: "false"

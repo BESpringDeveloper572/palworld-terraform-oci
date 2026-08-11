@@ -4,9 +4,12 @@
   become: true
 
   tasks:
-    - name: Run backup
-      ansible.builtin.shell: |
-        docker exec palworld-server backup
+    - name: Compress Palworld Saved directory into tar.gz
+      community.general.archive:
+      path: "{{ server_data_dir }}/palworld_server/PalServer/Pal/Saved"
+      dest: "{{ server_data_dir }}/backups"
+      format: gz
+
     - name: Upload backup to keep directory in Object Store
       ansible.builtin.shell: |
         LATEST=$(ls -t /opt/palworld/backups/*.tar.gz 2>/dev/null | head -n 1)

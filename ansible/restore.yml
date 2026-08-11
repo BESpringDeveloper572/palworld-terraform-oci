@@ -1,0 +1,33 @@
+---
+- name: Create and download backup from server to Object Store
+  hosts: palworld_server
+  become: true
+
+  tasks:
+    - name: Download using OCI CLI instead
+      ansible.builtin.shell: |
+        /root/bin/oci os object get --bucket-name palworld-backups --name {{ palworld_backup_tar }} --file /opt/palworld/backups/{{ palworld_backup_tar | basename }} --auth instance_principal
+
+    - name: Stop Palworld Docker Container
+      hosts: palworld_server
+      become: true
+      tasks:
+        - name: Restart Palworld container
+          community.docker.docker_container:
+            name: palworld-server
+            state: stopped
+
+    - name: Extract Palworld backup
+      ansible.builtin.unarchive:
+        src: "/opt/palworld/backups/{{ palworld_backup_tar | basename }}"
+        dest: "/opt/palworld/palworld_server/PalServer/Pal/Saved"
+        remote_src: true
+
+    - name: Start Palworld Docker Container
+      hosts: palworld_server
+      become: true
+      tasks:
+        - name: Restart Palworld container
+          community.docker.docker_container:
+            name: palworld-server
+            state: started
