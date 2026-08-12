@@ -54,4 +54,6 @@
 - Be aware that things may change in the future and Oracle can shut down your server at any time (and may be even your account). I'd suggest to copy your server backup to your computer every once in a while.
 - Backups are created everyday at midnight by Palworld and my cron job will upload them to Object Store at 3AM/3PM. You can configure backups by adding [these variables](https://github.com/supersunho/docker-palworld-server#backups) into the envs for [docker](ansible/roles/palworld/tasks/main.yml) under env.
 
+- There is a branch called `thijsvanloef` that uses their Docker image. It is more configurable with more frequent updates, but it is less compatible with Oracle's Ampere servers since they are ARM64.
+
 If you are stuck on any steps or need additional info, please look over official documentation for [Oracle Cloud Infrastructure](https://docs.oracle.com/en-us/iaas/Content/devtoolshome.htm) or [Ansible](https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_intro.html) or [Palworld](https://hub.docker.com/r/thijsvanloef/palworld-server-docker).
