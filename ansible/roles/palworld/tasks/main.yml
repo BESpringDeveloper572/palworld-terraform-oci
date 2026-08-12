@@ -90,3 +90,4 @@
       ADMIN_PASSWORD: "{{ admin_password }}"
       RCON_ENABLED: "true"
       IDLE_RESTART_ENABLED: "false"
+      ENABLE_PUBLIC_LOBBY: "true"
