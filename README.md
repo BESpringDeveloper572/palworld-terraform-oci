@@ -40,7 +40,7 @@
 - Run `ansible-playbook upload-backup.yml -e "palworld_backup_tar=<file-name>"` to copy your backup from Object Store into server. Put keep/ in front of filename if the file is in keep directory.
 - To restore from backup, ssh into server and run `docker exec -it palworld-server restore`. This command will look in `/opt/palworld/backups` so if you had to recreate your server, download from Object Store and move here.
 - Backups are periodically saved in [OCI Object Store](https://cloud.oracle.com/object-storage/buckets) in your compartment with bucket name `palworld-backups`.
-- Backups are deleted after 14 days so either download saves to your computer or move backups to `/keep/` directory in [bucket](https://cloud.oracle.com/object-storage/buckets. Backups moved there are not deleted.
+- Backups are deleted after 14 days so either download saves to your computer or move backups to `/keep/` directory in [bucket](https://cloud.oracle.com/object-storage/buckets). Backups moved there are not deleted.
 
 ### Configuration
 - Server config is saved in `/opt/palworld/` **on the server**.
