@@ -6,9 +6,9 @@
     update_cache: yes
   become: true  # Required for root privileges
 
-- name: Schedule hourly Palworld backup upload to OCI via PAR
+- name: Schedule hourly Palworld backup upload to OCI
   ansible.builtin.cron:
-    name: "Upload Palworld Backups to OCI Bucket via PAR"
+    name: "Upload Palworld Backups to OCI Bucket"
     minute: "0"
     hour: "3,15" # Run at 3AM and 3PM
     user: "root"

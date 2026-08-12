@@ -77,14 +77,12 @@
     ports:
       - "8211:8211/udp"
     volumes:
-      - "{{ server_data_dir }}/backups:/home/steam/backups"
+      - "{{ server_data_dir }}/backups:/palworld/backups"
       - "{{ server_data_dir }}/palworld_server:/palworld/Pal/Saved"
     env:
       PUID: "1000"
       PGID: "1000"
-      SERVER_PORT: "8211"
       MAX_PLAYERS: "32"
-      MULTITHREAD: "true"
       LANGUAGE: "en"
       TZ: "{{ timezone }}"
       SERVER_NAME: "{{ server_name }}"

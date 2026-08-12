@@ -20,7 +20,7 @@
     - name: Extract Palworld backup
       ansible.builtin.unarchive:
         src: "/opt/palworld/backups/{{ palworld_backup_tar | basename }}"
-        dest: "/opt/palworld/palworld_server/PalServer/Pal/Saved"
+        dest: "/opt/palworld/palworld_server/"
         remote_src: true
 
     - name: Start Palworld Docker Container
