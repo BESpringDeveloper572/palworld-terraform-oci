@@ -50,6 +50,8 @@ resource "oci_core_security_list" "palworld_sl" {
       min = 8211
       max = 8211
     }
+
+    description = "Allow anyone to join Palworld server"
   }
 
   ingress_security_rules {
@@ -61,6 +63,7 @@ resource "oci_core_security_list" "palworld_sl" {
       min = 22
       max = 22
     }
+    description = "Allow ssh from IPs from same internet provider and region"
   }
 
   egress_security_rules {
