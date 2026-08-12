@@ -23,6 +23,9 @@
 1. Update the vars in ansible/group_vars/palworld_server.yml.sample and rename to palworld_server.yml. (timezone should be like CST, PST, etc)
 1. Create a new ssh-key pair (**DIFFERENT** from the one used for your OCI account). Use this [guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) to generate (notice it is different from one generated before with .pub files)
 1. Go into Ansible directory and run `ansible-playbook deploy-palworld.yml --ask-pass` If you get permission denied, run `ssh-add <path-to-ssh-key>` first.
+1. Wait about 10-20 min for server to full launch.
+
+- If you are unable to see/connect to your server after about an hour after deploy, run restart. I've had issues where download gets stuck. 
 
 ## Maintenance
 
