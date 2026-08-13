@@ -55,19 +55,6 @@ resource "oci_core_security_list" "palworld_sl" {
   }
 
   ingress_security_rules {
-    protocol    = "17"
-    source      = "0.0.0.0/0"
-    source_type = "CIDR_BLOCK"
-
-    udp_options {
-      min = 27015
-      max = 27015
-    }
-
-    description = "Allow Steam to query port to put on available community server list"
-  }
-
-  ingress_security_rules {
     protocol = "6"
     source   = local.my_isp_cidr_block
     source_type = "CIDR_BLOCK"

@@ -71,15 +71,14 @@
 - name: Run Palworld Docker container
   community.docker.docker_container:
     name: palworld-server
-    image: thijsvanloef/palworld-server-docker:latest
+    image: supersunho/palworld-server:latest
     state: started
     restart_policy: unless-stopped
     ports:
       - "8211:8211/udp"
-      - "27015:27015/udp"
     volumes:
-      - "{{ server_data_dir }}/backups:/palworld/backups"
-      - "{{ server_data_dir }}/palworld_server:/palworld/Pal/Saved"
+      - "{{ server_data_dir }}/backups:/home/steam/backups"
+      - "{{ server_data_dir }}/palworld_server:/home/steam/palworld_server/Pal"
     env:
       PUID: "1000"
       PGID: "1000"
