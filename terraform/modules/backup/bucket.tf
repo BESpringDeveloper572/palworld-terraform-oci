@@ -68,4 +68,6 @@ resource "oci_identity_policy" "palworld_server_backup_write_permission" {
   description    = "Allow Palworld to write backups to Object Store"
   name           = "palworld-backup-write-permission"
   statements = ["Allow dynamic-group ${oci_identity_dynamic_group.palworld_server_instance_permission_group.name} to manage objects in compartment id ${var.compartment_id} where all {target.bucket.name='${oci_objectstorage_bucket.palworld_backups_bucket.name}', any { request.permission='OBJECT_CREATE', request.permission='OBJECT_READ' }}"]
+
+  depends_on = [oci_identity_dynamic_group.palworld_server_instance_permission_group]
 }
