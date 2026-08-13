@@ -76,6 +76,7 @@
     restart_policy: unless-stopped
     ports:
       - "8211:8211/udp"
+      - "27015:27015/udp"
     volumes:
       - "{{ server_data_dir }}/backups:/palworld/backups"
       - "{{ server_data_dir }}/palworld_server:/palworld/Pal/Saved"
