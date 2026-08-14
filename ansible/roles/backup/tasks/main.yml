@@ -9,11 +9,11 @@
 - name: Schedule hourly Palworld backup upload to OCI
   ansible.builtin.cron:
     name: "Upload Palworld Backups to OCI Bucket"
-    minute: "0"
-    hour: "3,15" # Run at 3AM and 3PM
+    minute: "10"
+    hour: "0,12" # Run at 3AM and 3PM
     user: "root"
     # Directly uses the variable to populate the cron string
     job: >
-      LATEST=$(ls -t {{ server_data_dir }}/backups/*.tar.gz 2>/dev/null | head -n 1) && 
+      LATEST=$(ls -t {{ server_data_dir }}/backups/automatic/*.tar.gz 2>/dev/null | head -n 1) && 
       [ -f "$LATEST" ] && 
       /root/bin/oci os object put --bucket-name "palworld-backups" --file "${LATEST}" --auth instance_principal > /dev/null 2>&1
