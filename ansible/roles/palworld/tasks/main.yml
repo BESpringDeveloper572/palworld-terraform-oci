@@ -92,3 +92,4 @@
       IDLE_RESTART_ENABLED: "false"
       IS_MULTIPLAY: "true"
       ENABLE_PUBLIC_LOBBY: "true"
+      IS_START_LOCATION_SELECT_BY_MAP: "false"
