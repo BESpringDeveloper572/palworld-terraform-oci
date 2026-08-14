@@ -10,6 +10,7 @@ module "server" {
   tenancy_ocid = var.tenancy_ocid
   image_id = var.image_id
   ssh_public_key_path = var.ssh_public_key_path
+  instance_timezone = var.instance_timezone
 }
 
 module "backup" {

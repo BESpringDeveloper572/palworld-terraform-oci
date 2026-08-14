@@ -17,6 +17,19 @@
             name: palworld-server
             state: stopped
 
+    - name: Wipe existing save directory
+      ansible.builtin.file:
+        path: "/opt/palworld/palworld_server/"
+        state: absent
+
+    - name: Recreate save directory
+      ansible.builtin.file:
+        path: "/opt/palworld/palworld_server/"
+        state: directory
+        owner: "1000"
+        group: "1000"
+        mode: "0755"
+
     - name: Extract Palworld backup
       ansible.builtin.unarchive:
         src: "/opt/palworld/backups/{{ palworld_backup_tar | basename }}"

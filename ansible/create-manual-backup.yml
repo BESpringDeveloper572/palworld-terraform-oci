@@ -2,16 +2,18 @@
 - name: Create and download backup from server to Object Store
   hosts: palworld_server
   become: true
+  vars:
+    server_data_dir: /opt/palworld
 
   tasks:
     - name: Compress Palworld Saved directory into tar.gz
       community.general.archive:
-      path: "{{ server_data_dir }}/palworld_server/PalServer/Pal/Saved"
-      dest: "{{ server_data_dir }}/backups"
-      format: gz
+        path: "{{ server_data_dir }}/palworld_server/"
+        dest: "{{ server_data_dir }}/backups/palworld-{{ now(fmt='%Y%m%d_%H%M%S') }}.tar.gz"
+        format: gz
 
     - name: Upload backup to keep directory in Object Store
       ansible.builtin.shell: |
-        LATEST=$(ls -t /opt/palworld/backups/*.tar.gz 2>/dev/null | head -n 1)
+        LATEST=$(ls -t {{ server_data_dir }}/backups/*.tar.gz 2>/dev/null | head -n 1)
         [ -f "$LATEST" ] && 
         /root/bin/oci os object put --bucket-name "palworld-backups" --file "${LATEST}" --name "keep/$(basename $LATEST)" --auth instance_principal

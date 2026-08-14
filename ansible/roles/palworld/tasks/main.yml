@@ -78,7 +78,7 @@
       - "8211:8211/udp"
     volumes:
       - "{{ server_data_dir }}/backups:/home/steam/backups"
-      - "{{ server_data_dir }}/palworld_server:/home/steam/palworld_server/Pal"
+      - "{{ server_data_dir }}/palworld_server:/home/steam/palworld_server/Pal/Saved"
     env:
       PUID: "1000"
       PGID: "1000"
@@ -93,3 +93,4 @@
       IS_MULTIPLAY: "true"
       ENABLE_PUBLIC_LOBBY: "true"
       IS_START_LOCATION_SELECT_BY_MAP: "false"
+      BACKUP_INTERVAL: "43200"
