@@ -11,6 +11,7 @@ module "server" {
   image_id = var.image_id
   ssh_public_key_path = var.ssh_public_key_path
   instance_timezone = var.instance_timezone
+  ssh_private_key_path = var.ssh_private_key_path
 }
 
 module "backup" {

@@ -26,3 +26,11 @@ resource "oci_core_instance" "palworld_server" {
     }
     preserve_boot_volume = false
 }
+
+resource "local_file" "ansible_hosts" {
+    filename = "${path.root}/../ansible/hosts.ini"
+    content = templatefile("${path.root}/../ansible/hosts.ini.tpl", {
+        web_ips = [oci_core_instance.palworld_server.private_ip]
+        ssh_private_key_path = var.ssh_private_key_path
+    })
+}
