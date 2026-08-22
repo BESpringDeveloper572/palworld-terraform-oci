@@ -23,6 +23,13 @@
 1. Update the vars in ansible/group_vars/palworld_server.yml.sample and rename to palworld_server.yml. (timezone should be like CST, PST, etc)
 1. Create a new ssh-key pair (**DIFFERENT** from the one used for your OCI account). Use this [guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) to generate (notice it is different from one generated before with .pub files)
 1. Go into Ansible directory and run `ansible-playbook deploy-palworld.yml --ask-pass` If you get permission denied, run `ssh-add <path-to-ssh-key>` first.
+1. Wait about 10-20 min for server to full launch.
+
+### Untested automated script instructions
+1. Fill out `terraform/terraform.tfvars.sample` and `ansible/group_vars/palworld_server.yml.sample`
+2. Run `./deploy-and-run.sh`
+
+- If you are unable to see/connect to your server after about an hour after deploy, run restart. I've had issues where download gets stuck. 
 
 ## Maintenance
 
@@ -52,6 +59,8 @@
 - You can skip steps 7 and 8 if you upgrade to Pay As You Go (PAYG). If you upgrade to PAYG, you can update your ocpus from 2 to 4 and memory from 12 to 24 (which allows you to have more players), but be careful as you may accidentally be charged due to [June 2026 free tier changes](https://www.cnelecar.com/blog/oracle-always-free-arm-limits-cut-2026/).
 - To ensure you don't get charged, [set up a budget alert](https://docs.oracle.com/en-us/iaas/Content/Billing/Tasks/create-alert-rule.htm).
 - Be aware that things may change in the future and Oracle can shut down your server at any time (and may be even your account). I'd suggest to copy your server backup to your computer every once in a while.
-- Add AUTO_UPDATE_CRON_EXPRESSION and BACKUP_CRON_EXPRESSION to deploy-palworld.yml under env to change the time to update and create backups respectively. It defaults to around 2 AM in the timezone you set (my friends are nocturnal so I'll probably change this myself). Backups are created at 2AM everyday and copied to Object Store at 3AM and 3PM everyday.
+- Backups are created everyday at midnight by Palworld and my cron job will upload them to Object Store at 3AM/3PM. You can configure backups by adding [these variables](https://github.com/supersunho/docker-palworld-server#backups) into the envs for [docker](ansible/roles/palworld/tasks/main.yml) under env.
+
+- There is a branch called `thijsvanloef` that uses their Docker image. It is more configurable with more frequent updates, but it is less compatible with Oracle's Ampere servers since they are ARM64.
 
 If you are stuck on any steps or need additional info, please look over official documentation for [Oracle Cloud Infrastructure](https://docs.oracle.com/en-us/iaas/Content/devtoolshome.htm) or [Ansible](https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_intro.html) or [Palworld](https://hub.docker.com/r/thijsvanloef/palworld-server-docker).
