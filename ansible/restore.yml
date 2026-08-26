@@ -1,6 +1,6 @@
 ---
 - name: Create and download backup from server to Object Store
-  hosts: palworld_server
+  hosts: palworld_servers
   become: true
 
   tasks:
@@ -9,7 +9,7 @@
         /root/bin/oci os object get --bucket-name palworld-backups --name {{ palworld_backup_tar }} --file /opt/palworld/backups/{{ palworld_backup_tar | basename }} --auth instance_principal
 
     - name: Stop Palworld Docker Container
-      hosts: palworld_server
+      hosts: palworld_servers
       become: true
       tasks:
         - name: Restart Palworld container
@@ -37,7 +37,7 @@
         remote_src: true
 
     - name: Start Palworld Docker Container
-      hosts: palworld_server
+      hosts: palworld_servers
       become: true
       tasks:
         - name: Restart Palworld container

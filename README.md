@@ -26,7 +26,7 @@
 1. Wait about 10-20 min for server to full launch.
 
 ### Untested automated script instructions
-1. Fill out `terraform/terraform.tfvars.sample` and `ansible/group_vars/palworld_server.yml.sample`
+1. Fill out `terraform/terraform.tfvars.sample` and `ansible/group_vars/palworld_servers.yml.sample`
 2. Run `./deploy-and-run.sh`
 
 - If you are unable to see/connect to your server after about an hour after deploy, run restart. I've had issues where download gets stuck. 

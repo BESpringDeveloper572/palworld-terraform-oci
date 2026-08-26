@@ -1,6 +1,6 @@
 ---
 - name: Create and download backup from server to Object Store
-  hosts: palworld_server
+  hosts: palworld_servers
   become: true
   vars:
     server_data_dir: /opt/palworld

@@ -1,6 +1,6 @@
 ---
 - name: Deploy Palworld Docker Container
-  hosts: palworld_server
+  hosts: palworld_servers
   become: true
 
   roles:
