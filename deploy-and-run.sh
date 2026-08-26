@@ -6,7 +6,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 (
   cd terraform
-  cp terraform.tfvars.example terraform.tfvars
+  cp terraform.tfvars.sample terraform.tfvars
   terraform init
   terraform apply
 )
