@@ -30,7 +30,7 @@ resource "oci_core_instance" "palworld_server" {
 resource "local_file" "ansible_hosts" {
     filename = "${path.root}/../ansible/hosts.ini"
     content = templatefile("${path.module}/templates/hosts.ini.tpl", {
-        ip = oci_core_instance.palworld_server.private_ip
+        ip = oci_core_instance.palworld_server.public_ip
         ssh_private_key_path = var.ssh_private_key_path
     })
 }
