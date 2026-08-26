@@ -14,5 +14,5 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 (
   cd ansible
   cp group_vars/palworld_servers.yml.sample group_vars/palworld_servers.yml
-  ansible-playbook deploy-palworld.yml
+#  ansible-playbook deploy-palworld.yml
 )
